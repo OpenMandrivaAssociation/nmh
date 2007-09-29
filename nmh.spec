@@ -1,24 +1,26 @@
-Summary: A capable mail handling system with a command line interface.
-Name: nmh
-Obsoletes: mh
-Provides: mh
-Version: 1.2
-Release: %mkrel 1
-License: BSD-style
-Url: http://savannah.nongnu.org/projects/nmh/
-Group: Networking/Mail
-Source0: ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.bz2
-Source1: procmailrc.example
-#
-# XXX this patch was applied to nmh-0.27 and is included for reference.
-Patch2: nmh-0.27-security.patch
-Patch3: nmh-1.0.3-compat21.patch
-Patch4: nmh-1.2-prefer_db4.patch
-
+Summary:	A capable mail handling system with a command line interface.
+Name:		nmh
+Version:	1.2
+Release:	%mkrel 2
+License:	BSD-style
+URL:		http://savannah.nongnu.org/projects/nmh/
+Group:		Networking/Mail
+Source0:	ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.bz2
+Source1:	procmailrc.example
+Patch0:		nmh-1.0.3-compat21.patch
+Patch1:		nmh-1.2-prefer_db4.patch
+# from debian
+Patch2:		04-fix-64bit-issues-399271.dpatch
+Patch3:		05-segfault-399271.dpatch
 BuildRequires:	db4-devel
 BuildRequires:	flex
 BuildRequires:	libtermcap-devel
-BuildRoot: %{_tmppath}/%{name}-root
+BuildRequires:	libtool
+BuildRequires:	sendmail-command
+BuildRequires:	vim-minimal
+Provides:	mh
+Obsoletes:	mh
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 Nmh is an email system based on the MH email system and is intended to
@@ -36,38 +38,40 @@ use nmh and exmh together as your email user agent, you should install
 nmh.
 
 %prep
+
 %setup -q
 
-#
-# XXX this patch was applied to nmh-0.27 and is included for reference.
-#%patch2 -p1 -b .security
-%patch3 -p0 -b .compat21
-%patch4 -p0 -b .prefer_db4
+%patch0 -p0 -b .compat21
+%patch1 -p0 -b .prefer_db4
+%patch2 -p1 -b .fix-64bit-issues-399271
+%patch3 -p1 -b .segfault-399271
 
 # XXX add promailrc.example
 cp %SOURCE1 .
 
 %build
 autoconf
+
 # XXX is this still needed? breaks on 5.2 ...
-%configure --with-editor=/bin/vi --with-mts=sendmail \
-		--libdir=%_libdir/nmh \
-		--sysconfdir=%_sysconfdir/nmh \
-		--with-locking=fcntl
+%configure \
+    --with-editor=/bin/vi \
+    --with-mts=sendmail \
+    --libdir=%{_libdir}/nmh \
+    --sysconfdir=%{_sysconfdir}/nmh \
+    --with-locking=fcntl
 
 make
 
 %install
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf %{buildroot}
 
 # XXX unnecessary because DOT_LOCKING is disabled
-make DESTDIR=${RPM_BUILD_ROOT} MAIL_SPOOL_GRP=$(id -gn) install
+make DESTDIR=%{buildroot} MAIL_SPOOL_GRP=$(id -gn) install
 
 %clean
-rm -rf ${RPM_BUILD_ROOT}
+rm -rf %{buildroot}
 
 %post
-
 if [ ! -d %{_bindir}/mh -a ! -L %{_bindir}/mh ] ; then
     ln -s . %{_bindir}/mh
 fi
@@ -77,7 +81,6 @@ fi
 if [ -d /etc/smrsh -a ! -L /etc/smrsh/slocal ] ; then
     ln -sf %{_libdir}/%{name}/slocal /etc/smrsh/slocal
 fi
-
 
 %triggerpostun -- mh, nmh <= 0.27-7
 if [ ! -d %{_bindir}/mh -a ! -L %{_bindir}/mh ] ; then
@@ -101,11 +104,7 @@ fi
 %{_bindir}/*
 %dir %{_sysconfdir}/nmh
 %config (noreplace) %{_sysconfdir}/nmh/*
-
 # XXX use of _libdir appears incorrect, should be libexecdir?
 %dir %{_libdir}/nmh
 %{_libdir}/nmh/*
-
 %{_mandir}/man[158]/*
-
-
