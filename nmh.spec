@@ -1,4 +1,4 @@
-Summary:	A capable mail handling system with a command line interface.
+Summary:	A capable mail handling system with a command line interface
 Name:		nmh
 Version:	1.2
 Release:	%mkrel 2
