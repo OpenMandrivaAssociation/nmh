@@ -20,6 +20,7 @@ BuildRequires:	sendmail-command
 BuildRequires:	vim-minimal
 Provides:	mh
 Obsoletes:	mh
+BuildRoot:	%{_tmppath}/%{name}-root
 
 %description
 Nmh is an email system based on the MH email system and is intended to
