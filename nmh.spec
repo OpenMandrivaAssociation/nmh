@@ -1,7 +1,7 @@
 Summary:	A capable mail handling system with a command line interface
 Name:		nmh
 Version:	1.2
-Release:	%mkrel 2
+Release:	%mkrel 4
 License:	BSD-style
 URL:		http://savannah.nongnu.org/projects/nmh/
 Group:		Networking/Mail
