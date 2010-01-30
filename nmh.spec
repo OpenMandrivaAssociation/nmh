@@ -1,17 +1,13 @@
 Summary:	A capable mail handling system with a command line interface
 Name:		nmh
-Version:	1.2
-Release:	%mkrel 5
+Version:	1.3
+Release:	%mkrel 1
 License:	BSD-style
 URL:		http://savannah.nongnu.org/projects/nmh/
 Group:		Networking/Mail
-Source0:	ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.bz2
+Source0:	ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.gz
 Source1:	procmailrc.example
 Patch0:		nmh-1.0.3-compat21.patch
-Patch1:		nmh-1.2-prefer_db4.patch
-# from debian
-Patch2:		04-fix-64bit-issues-399271.dpatch
-Patch3:		05-segfault-399271.dpatch
 BuildRequires:	db4-devel
 BuildRequires:	flex
 BuildRequires:	libtermcap-devel
@@ -40,20 +36,14 @@ nmh.
 %prep
 
 %setup -q
-
 %patch0 -p0 -b .compat21
-%patch1 -p0 -b .prefer_db4
-%patch2 -p1 -b .fix-64bit-issues-399271
-%patch3 -p1 -b .segfault-399271
 
 # XXX add promailrc.example
 cp %SOURCE1 .
 
 %build
-autoconf
-
 # XXX is this still needed? breaks on 5.2 ...
-%configure \
+%configure2_5x \
     --with-editor=/bin/vi \
     --with-mts=sendmail \
     --libdir=%{_libdir}/nmh \
