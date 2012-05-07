@@ -7,7 +7,6 @@ URL:		http://savannah.nongnu.org/projects/nmh/
 Group:		Networking/Mail
 Source0:	ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.gz
 Source1:	procmailrc.example
-Patch0:		nmh-1.0.3-compat21.patch
 BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	termcap-devel
@@ -36,7 +35,6 @@ nmh.
 %prep
 
 %setup -q
-%patch0 -p0 -b .compat21
 
 # XXX add promailrc.example
 cp %SOURCE1 .
