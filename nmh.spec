@@ -10,7 +10,7 @@ Source1:	procmailrc.example
 Patch0:		nmh-1.0.3-compat21.patch
 BuildRequires:	db-devel
 BuildRequires:	flex
-BuildRequires:	libtermcap-devel
+BuildRequires:	termcap-devel
 BuildRequires:	libtool
 BuildRequires:	sendmail-command
 BuildRequires:	vim-minimal
