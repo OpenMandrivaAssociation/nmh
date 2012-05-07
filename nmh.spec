@@ -1,14 +1,14 @@
 Summary:	A capable mail handling system with a command line interface
 Name:		nmh
-Version:	1.3
-Release:	%mkrel 2
+Version:	1.4
+Release:	1
 License:	BSD-style
 URL:		http://savannah.nongnu.org/projects/nmh/
 Group:		Networking/Mail
 Source0:	ftp://ftp.mhost.com/pub/nmh/nmh-%{version}.tar.gz
 Source1:	procmailrc.example
 Patch0:		nmh-1.0.3-compat21.patch
-BuildRequires:	db4-devel
+BuildRequires:	db-devel
 BuildRequires:	flex
 BuildRequires:	libtermcap-devel
 BuildRequires:	libtool
