@@ -1,0 +1,52 @@
+###################################################################
+# .procmailrc
+###################################################################
+# To use procmail, put the next line in your .forward file:
+# "|IFS=' ' && exec /usr/local/bin/procmail -f- || exit 75 #XXX"
+# Do not remove the double quotes.  Change XXX to your username.
+# Edit path to procmail above, and the VARIABLES below, as needed.
+# Adapt the MAILING LIST section below for lists you subscribe to.
+# Your .forward needs to be world-readable, but not world-writable.
+###################################################################
+# This .procmailrc is written for use with nmh/mh/exmh/mh-e
+###################################################################
+
+### VARIABLES ###
+VERBOSE=off
+SHELL=/bin/sh
+PATH=/usr/lib/nmh:/usr/bin:/usr/local/bin
+MAILDIR=$HOME/Mail
+LOGFILE=$MAILDIR/procmail.log
+LOCKEXT=.lock
+
+#################
+# CLEANUP MESSAGE
+#################
+
+# Force the "From user date" to become part of header
+:0 Whf
+| formail -z -R 'From ' X-Envelope-From:
+
+###############
+# MAILING LISTS
+###############
+
+:0 w: nmh-workers/$LOCKEXT
+* ^Resent-from: *nmh-workers
+| rcvstore +nmh-workers
+
+# catches exmh-{announce,users,workers}
+:0 w: exmh/$LOCKEXT
+* ^TOexmh
+| rcvstore +exmh
+
+# Catch junk.  Don't add it to "unseen" sequence (nmh only)
+:0 w: junk/$LOCKEXT
+* ^(reply-to|from|sender):.*(spammer|flamer|evil-host)
+| rcvstore -nounseen +junk
+
+################
+# DEFAULT ACTION
+################
+:0 w: inbox/$LOCKEXT
+| rcvstore -create +inbox

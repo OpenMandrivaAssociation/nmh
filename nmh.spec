@@ -96,3 +96,38 @@ fi
 %dir %{_libdir}/nmh
 %{_libdir}/nmh/*
 %{_mandir}/man[158]/*
+
+
+%changelog
+* Mon May 07 2012 Crispin Boylan <crisb@mandriva.org> 1.4-1
++ Revision: 797290
+- Drop patch 1
+- New release
+
+* Mon Dec 06 2010 Oden Eriksson <oeriksson@mandriva.com> 1.3-2mdv2011.0
++ Revision: 613078
+- the mass rebuild of 2010.1 packages
+
+* Sat Jan 30 2010 Funda Wang <fwang@mandriva.org> 1.3-1mdv2010.1
++ Revision: 498552
+- New version 1.3
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - rebuild
+
+* Tue Jul 29 2008 Thierry Vignaud <tv@mandriva.org> 1.2-4mdv2009.0
++ Revision: 254015
+- rebuild
+
+* Thu Jan 03 2008 Olivier Blin <blino@mandriva.org> 1.2-2mdv2008.1
++ Revision: 141006
+- restore BuildRoot
+
+  + Thierry Vignaud <tv@mandriva.org>
+    - kill re-definition of %%buildroot on Pixel's request
+    - fix summary-ended-with-dot
+
+* Sat Sep 29 2007 Oden Eriksson <oeriksson@mandriva.com> 1.2-2mdv2008.0
++ Revision: 93847
+- attempt to fix #26612 (Various nmh components segfault) by adding two debian patches
+
